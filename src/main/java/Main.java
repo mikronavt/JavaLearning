@@ -1,10 +1,9 @@
-import decorator.DecoratorTest;
-import factoryMethod.FactoryMethodTest;
+import responsibilityChain.TestRespChain;
 
 public class Main {
 
     public static void main(String[] args) {
-        new FactoryMethodTest().testFactoryMethod();
+        new TestRespChain().testRespChain();
     }
 
 }
