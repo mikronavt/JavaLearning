@@ -1,9 +1,9 @@
-import responsibilityChain.TestRespChain;
+import strategy.StrategyTest;
 
 public class Main {
 
     public static void main(String[] args) {
-        new TestRespChain().testRespChain();
+        new StrategyTest().testStrategy();
     }
 
 }
