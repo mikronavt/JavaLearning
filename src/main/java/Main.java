@@ -1,10 +1,10 @@
 import decorator.DecoratorTest;
-import decorator.UserServiceImpl;
+import factoryMethod.FactoryMethodTest;
 
 public class Main {
 
     public static void main(String[] args) {
-        new DecoratorTest().testDecorator();
+        new FactoryMethodTest().testFactoryMethod();
     }
-    
+
 }
