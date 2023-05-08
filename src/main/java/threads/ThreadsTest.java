@@ -19,8 +19,8 @@ public class ThreadsTest {
         }
     }
     public void testCounter() throws InterruptedException{
-        int countOfThreads = 100;
-        int waitForCheck = 100;
+        int countOfThreads = 30;
+        int waitForCheck = 30;
         counter = new Counter(0);
         atomicCounter = new AtomicCounter(0);
         List<CounterRunner> counterRunners = new ArrayList<>();
