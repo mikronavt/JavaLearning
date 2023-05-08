@@ -1,9 +1,14 @@
 import strategy.StrategyTest;
+import threadInterruption.TestPrimeGenerator;
 
 public class Main {
 
     public static void main(String[] args) {
-        new StrategyTest().testStrategy();
+        try {
+            new TestPrimeGenerator().testPrimeGeneratorBQ();
+        } catch(InterruptedException e){
+            e.printStackTrace();
+        }
     }
 
 }
