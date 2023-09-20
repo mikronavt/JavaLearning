@@ -1,6 +1,7 @@
 package api;
 
 import api.UserData;
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import io.restassured.http.ContentType;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -30,5 +31,50 @@ public class ReqresTest {
         for (int i = 0; i < avatars.size(); i++) {
             Assertions.assertTrue(avatars.get(i).contains(ids.get(i)));
         }
+    }
+
+    @Test
+    public void successRegTest(){
+        Specifications.installSpecifications(Specifications.requestSpec(URL), Specifications.responseSpecOK200());
+        Integer id = 4;
+        String token = "QpwL5tke4Pnpja7X4";
+        Register user = new Register("eve.holt@reqres.in", "pistol");
+        SuccessReg successReg = given()
+                .body(user)
+                .when()
+                .post("api/register")
+                .then().log().all()
+                .extract().as(SuccessReg.class);
+        Assertions.assertNotNull(successReg);
+        Assertions.assertEquals(id, successReg.getId());
+        Assertions.assertEquals(token, successReg.getToken());
+    }
+
+    @Test
+    public void unsuccessRegTest(){
+        Specifications.installSpecifications(Specifications.requestSpec(URL), Specifications.responseSpecError400());
+        String error = "Missing password";
+        Register user = new Register("sydney@fife", "");
+        UnsuccessReg unsuccessReg = given()
+                .body(user)
+                .when()
+                .post("api/register")
+                .then().log().all()
+                .extract().as(UnsuccessReg.class);
+        Assertions.assertNotNull(unsuccessReg);
+        Assertions.assertEquals(error, unsuccessReg.getError());
+    }
+
+    @Test
+    public void sortedYearsTest() {
+        Specifications.installSpecifications(Specifications.requestSpec(URL), Specifications.responseSpecOK200());
+        List<ColorsData> colors = given()
+                .when()
+                .get("api/unknown")
+                .then().log().all()
+                .extract().body().jsonPath().getList("data", ColorsData.class);
+        List<Integer> years = colors.stream().map(ColorsData::getYear).collect(Collectors.toList());
+        List<Integer> sortedYears = years.stream().sorted().collect(Collectors.toList());
+        Assertions.assertEquals(years, sortedYears);
     }
 }
