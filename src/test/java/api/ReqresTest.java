@@ -1,11 +1,9 @@
 package api;
 
-import api.UserData;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import io.restassured.http.ContentType;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
+import java.time.Clock;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -76,5 +74,28 @@ public class ReqresTest {
         List<Integer> years = colors.stream().map(ColorsData::getYear).collect(Collectors.toList());
         List<Integer> sortedYears = years.stream().sorted().collect(Collectors.toList());
         Assertions.assertEquals(years, sortedYears);
+    }
+
+    @Test
+    public void deleteUserTest() {
+        Specifications.installSpecifications(Specifications.requestSpec(URL), Specifications.responseSpec(204));
+        given()
+            .when()
+            .delete("api/users/2")
+            .then().log().all();
+    }
+
+    @Test
+    public void timeTest(){
+        Specifications.installSpecifications(Specifications.requestSpec(URL), Specifications.responseSpecOK200());
+        UserTime user = new UserTime("morpheus", "zion resident");
+        UserTimeResponse response = given()
+                .body(user)
+                .when()
+                .put("api/users/2")
+                .then().log().all()
+                .extract().as(UserTimeResponse.class);
+        String currentTime = Clock.systemUTC().instant().toString().replaceAll("(.{11})$", "");
+        Assertions.assertEquals(currentTime, response.getUpdatedAt().replaceAll("(.{5})$", ""));
     }
 }
